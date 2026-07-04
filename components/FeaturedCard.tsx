@@ -1,16 +1,16 @@
-import { formatPrice } from '@/lib/utils'
-import { Property } from '@/types'
-import { Ionicons } from '@expo/vector-icons'
-import { useRouter } from 'expo-router'
-import React from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { formatPrice } from "@/lib/utils";
+import { Property } from "@/types";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function FeaturedCard({ property }: { property: Property }) {
-
-    const router = useRouter()
+    const router = useRouter();
 
     return (
-        <TouchableOpacity className='w-72 mr-2 !rounded-3xl overflow-hiddden bg-white'
+        <TouchableOpacity
+            className="w-72 mr-2 !rounded-3xl overflow-hiddden bg-white"
             style={{
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 2 },
@@ -22,57 +22,64 @@ export default function FeaturedCard({ property }: { property: Property }) {
             onPress={() => router.push(`/(root)/property/${property.id}`)}
         >
             <Image
-                source={{ uri: property.images[0] }}
-                className='w-full h-44'
-                resizeMode='cover'
+                source={
+                    property.images.length > 0
+                        ? { uri: property.images[0] }
+                        : require("@/assets/images/kribb.png")
+                }
+                className="w-full h-44"
+                resizeMode="cover"
             />
-            <View className='absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-full'>
-                <Text className='text-xs font-semibold text-blue-600 capitalize'>
+            <View className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-full">
+                <Text className="text-xs font-semibold text-blue-600 capitalize">
                     {property.type}
                 </Text>
             </View>
 
             {/* Sold Badge */}
             {property.is_sold && (
-                <View className='absolute top-3 right-3 bg-red-500 px-3 py-1 rounded-full'>
-                    <Text className='text-xs font-semibold text-white'>Sold</Text>
+                <View className="absolute top-3 right-3 bg-red-500 px-3 py-1 rounded-full">
+                    <Text className="text-xs font-semibold text-white">Sold</Text>
                 </View>
             )}
 
-            <View className='p-4'>
+            <View className="p-4">
                 <Text
-                    className='text-base font-bold text-gray-800 mb-1' numberOfLines={1}
-                >{property.title}</Text>
+                    className="text-base font-bold text-gray-800 mb-1"
+                    numberOfLines={1}
+                >
+                    {property.title}
+                </Text>
 
-                <View className='flex-row items-center gap-1 mb-3'>
-                    <Ionicons name='location-outline' size={13} color={"#6b7280"} />
-                    <Text className='text-xs text-gray-500' numberOfLines={1}>
+                <View className="flex-row items-center gap-1 mb-3">
+                    <Ionicons name="location-outline" size={13} color={"#6b7280"} />
+                    <Text className="text-xs text-gray-500" numberOfLines={1}>
                         {property.address}, {property.city}
                     </Text>
                 </View>
 
-                <View className='flex-row items-center justify-between'>
-                    <Text className='text-blue-600 font-bold text-base'>
+                <View className="flex-row items-center justify-between">
+                    <Text className="text-blue-600 font-bold text-base">
                         {formatPrice(property.price)}
                     </Text>
 
-                    <View className='flex-row items-center gap-3'>
-                        <View className='flex-row items-center gap-1'>
-                            <Ionicons name='bed-outline' size={13} color={"#6b7280"} />
-                            <Text className='text-xs text-gray-500'>{property.bedrooms}</Text>
+                    <View className="flex-row items-center gap-3">
+                        <View className="flex-row items-center gap-1">
+                            <Ionicons name="bed-outline" size={13} color={"#6b7280"} />
+                            <Text className="text-xs text-gray-500">{property.bedrooms}</Text>
                         </View>
 
-                        <View className='flex-row items-center gap-3'>
-                            <View className='flex-row items-center gap-1'>
-                                <Ionicons name='water-outline' size={13} color={"#6b7280"} />
-                                <Text className='text-xs text-gray-500'>{property.bathrooms}</Text>
+                        <View className="flex-row items-center gap-3">
+                            <View className="flex-row items-center gap-1">
+                                <Ionicons name="water-outline" size={13} color={"#6b7280"} />
+                                <Text className="text-xs text-gray-500">
+                                    {property.bathrooms}
+                                </Text>
                             </View>
                         </View>
                     </View>
-
-
                 </View>
             </View>
         </TouchableOpacity>
-    )
+    );
 }
