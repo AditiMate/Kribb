@@ -1,7 +1,10 @@
+import { useUserStore } from "@/store/userStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { Platform } from "react-native";
 
-export default function TabLayout() {
+function AndroidTabs() {
+  const isAdmin = useUserStore((state) => state.isAdmin);
   return (
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
@@ -24,6 +27,18 @@ export default function TabLayout() {
         }}
       />
 
+      {isAdmin && (
+        <Tabs.Screen
+          name="create"
+          options={{
+            title: "Add Property",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="add-circle" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
+
       <Tabs.Screen
         name="saved"
         options={{
@@ -45,4 +60,42 @@ export default function TabLayout() {
       />
     </Tabs>
   );
+}
+
+function IOSTabs() {
+  const isAdmin = useUserStore((state) => state.isAdmin);
+  return (
+    <NativeTabs>
+      <NativeTabs.Trigger name="index">
+        <Icon sf="house.fill" />
+        <Label>Home</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="search">
+        <Icon sf="magnifyingglass" />
+        <Label>Search</Label>
+      </NativeTabs.Trigger>
+
+      {isAdmin && (
+        <NativeTabs.Trigger name="create">
+          <Icon sf="plus.circle.fill" />
+          <Label>Add Property</Label>
+        </NativeTabs.Trigger>
+      )}
+
+      <NativeTabs.Trigger name="saved">
+        <Icon sf="heart.fill" />
+        <Label>Saved</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="profile">
+        <Icon sf="person.fill" />
+        <Label>Profile</Label>
+      </NativeTabs.Trigger>
+    </NativeTabs>
+  );
+}
+
+export default function TabsLayout() {
+  return Platform.OS === "ios" ? <IOSTabs /> : <AndroidTabs />;
 }
